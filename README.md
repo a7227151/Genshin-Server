@@ -15,8 +15,11 @@ This update requires downloading GrassCuttertools-V1 0.0-M1 and OpenCommand.jar 
 This update needs to replace all the following documents below
 ------------------------------------------------------------------------------------------------
 21:00PM The new update task switches to using the task and adds a task trigger
+
 21:00PM 新的更新任务 切换到使用任务擅长和再添加一个任务触发器
+
 本次更新需要下载lib目录的fastutil-mini-8.5.6.jar，java-express.jar，kcp-netty-1.5.0.jar
+
 proto目录全部文件，gradle目录全部文件，src目录全部文件 全部替换即可
 ------------------------------------------------------------------------------------------------
 At 21:00pm, the new update task switches to using task and adds another task trigger
