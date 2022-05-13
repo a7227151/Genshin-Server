@@ -1,0 +1,31 @@
+{
+  "updateTime": [
+    4,
+    0,
+    0
+  ],
+  "initialMail": [
+    1001
+  ],
+  "birthDayMail": [
+    1004
+  ],
+  "dailySignInMail": [
+    {
+      "templateId": 1002,
+      "minLevel": 0
+    }
+  ],
+  "dailyRepetitionMail": [
+    {
+      "onlineOnly": false,
+      "triggerTime": [
+        12,
+        0,
+        0
+      ],
+      "templateId": 1003,
+      "minLevel": 0
+    }
+  ]
+}

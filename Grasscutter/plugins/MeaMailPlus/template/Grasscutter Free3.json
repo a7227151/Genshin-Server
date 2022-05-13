@@ -1,0 +1,18 @@
+{
+  "templateId": 1001,
+  "title": "祝你玩的开心",
+  "sender": "Mailing System",
+  "expireTime": 0,
+  "remainTime": 31536000,
+  "importance": 1,
+  "body": {
+    "content": "如果你是从某宝贩子来的或其他恭喜你你被骗了Grasscutter是免费开源的！",
+    "items": [
+      {
+        "id": 223,
+        "count": 100000,
+        "level": 1
+      }
+    ]
+  }
+}
