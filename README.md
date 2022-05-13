@@ -1,1 +1,2 @@
+"# Genshin-Server" 
 # Genshin-Server
