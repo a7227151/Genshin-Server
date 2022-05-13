@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "emu.grasscutter.net.proto";
+
+import "Vector.proto";
+
+message SitRsp {
+	uint32 entity_id = 2;
+	Vector position = 3;
+	uint64 chair_id = 4;
+}
