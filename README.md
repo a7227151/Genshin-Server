@@ -2,6 +2,10 @@
 # Genshin-Server
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
+0:56 GrassCutterToolsv1.0.1 修复主机未保存的错误
+-----------------------------------------------------------------------------------------------
+0:56 GrassCutterToolsv1. 0.1 fix host unsaved errors
+-----------------------------------------------------------------------------------------------
 This update GrasscutterTools-v1.0.0-M1 Update the remote server address and connect through grasscuttertools-v1 0.0-m1 input the uid of your game and send the verification code. The verification code will be sent to your in-game chat window. Fill in the correct verification code and use it
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
