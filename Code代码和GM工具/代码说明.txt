@@ -1,0 +1,66 @@
+使用方式：
+经过小小的开场动画后，你就可以用以下指令了，在服务端或者客户端输入都可以，客户端输入需要在聊天框找到server这个人，并且命令要带/，比如/give 101 1000000
+注意：uid 是指用户id，见游戏右下角，是数字。
+          itemid 是指物品、怪物、npc等id
+drop
+在你附近丢弃一个物品
+用法: drop|d <itemId|itemName> [amount
+别名: d dropitem
+give
+给予你或指定玩家一件物品
+用法: give|g [uid] <itemId|itemName> [amount]
+别名: g item giveitem
+givechar
+给予玩家一个指定的角色
+用法: givechar|givec <uid> <avatarId> [level]
+别名: givec
+killall
+杀死所有实体
+用法: killall [uid] [sceneId]
+heal
+治疗你当前团队中的所有角色
+用法: heal|h
+别名: h
+godmode
+防止你受到伤害
+用法: godmode [uid]
+changescene
+改变你的场景
+用法: changescene <scene id>
+别名: scene
+help
+发送帮助信息或显示关于指定命令的信息
+用法: help [command]
+spawn
+在你附近生成一个实体
+用法: spawn <entityId|entityName> [level] [amount]
+clearartifacts
+删除所有未装备及未解锁的圣遗物,包括五星
+用法: clearartifacts
+别名: clearart
+position
+获取坐标
+用法: position
+别名: pos
+weather
+改变天气
+用法: weather <weatherId> [climateId]
+别名: w
+setworldlevel
+设置你的世界等级 (需要重新登陆以正确显示)
+用法: setworldlevel <level>
+别名: setworldlvl
+resetconst
+重置你当前活动角色的星座等级，使用该命令后需要重新登录才能看到任何变化
+用法: resetconst [all]
+别名: resetconstellation
+setstats
+为你当前的活动角色设置战斗属性
+用法: setstats|stats <stat> <value>
+属性: hp 生命值 def 防御力 atk 攻击
+em 元素精通 er 元素充能 crate 暴击率
+dmg 暴击伤害 epyro 火伤 ecryo 冰伤
+ehydro 水伤 egeo 岩伤 edend 草伤
+eelec 雷伤 ephys 物伤
+别名: stats
+
