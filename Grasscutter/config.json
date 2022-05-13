@@ -1,0 +1,114 @@
+{
+  "folderStructure": {
+    "resources": "./resources/",
+    "data": "./data/",
+    "packets": "./packets/",
+    "keys": "./keys/",
+    "scripts": "./resources/scripts/",
+    "plugins": "./plugins/"
+  },
+  "databaseInfo": {
+    "connectionUri": "mongodb://localhost:27017",
+    "collection": "grasscutter"
+  },
+  "language": {
+    "language": "zh_CN",
+    "fallback": "en_US"
+  },
+  "account": {
+    "autoCreate": true,
+    "defaultPermissions": []
+  },
+  "server": {
+    "debugLevel": "NONE",
+    "runMode": "HYBRID",
+    "dispatch": {
+      "bindAddress": "0.0.0.0",
+      "accessAddress": "127.0.0.1",
+      "bindPort": 443,
+      "accessPort": 443,
+      "encryption": {
+        "useEncryption": true,
+        "useInRouting": true,
+        "keystore": "./keystore.p12",
+        "keystorePassword": "123456"
+      },
+      "policies": {
+        "cors": {
+          "enabled": false,
+          "allowedOrigins": [
+            "*"
+          ]
+        }
+      },
+      "regions": [],
+      "defaultName": "Grasscutter"
+    },
+    "game": {
+      "bindAddress": "0.0.0.0",
+      "accessAddress": "127.0.0.1",
+      "bindPort": 22102,
+      "accessPort": 22102,
+      "gameOptions": {
+        "inventoryLimits": {
+          "weapons": 2000,
+          "relics": 2000,
+          "materials": 2000,
+          "furniture": 2000,
+          "all": 30000
+        },
+        "avatarLimits": {
+          "singlePlayerTeam": 4,
+          "multiplayerTeam": 4
+        },
+        "worldEntityLimit": 1000,
+        "watchGachaConfig": false,
+        "enableShopItems": true,
+        "staminaUsage": true,
+        "rates": {
+          "adventureExp": 1.0,
+          "mora": 1.0,
+          "leyLines": 1.0
+        },
+        "databaseInfo": {
+          "connectionUri": "mongodb://localhost:27017",
+          "collection": "grasscutter"
+        }
+      },
+      "joinOptions": {
+        "welcomeEmotes": [
+          2007,
+          1002,
+          4010
+        ],
+        "welcomeMessage": "找本堂主有何贵干呀!",
+        "welcomeMail": {
+          "title": "Welcome to Grasscutter!",
+          "content": "Hi there!\r\nFirst of all, welcome to Grasscutter. If you have any issues, please let us know so that Lawnmower can help you! \r\n\r\nCheck out our:\r\n\u003ctype\u003d\"browser\" text\u003d\"Discord\" href\u003d\"https://discord.gg/T5vZU6UyeG\"/\u003e\n",
+          "sender": "Lawnmower",
+          "items": [
+            {
+              "itemId": 13509,
+              "itemCount": 1,
+              "itemLevel": 1
+            },
+            {
+              "itemId": 201,
+              "itemCount": 99999,
+              "itemLevel": 1
+            }
+          ]
+        }
+      },
+      "serverAccount": {
+        "avatarId": 10000046,
+        "nameCardId": 210001,
+        "adventureRank": 1,
+        "worldLevel": 0,
+        "nickName": "胡桃",
+        "signature": "嘿嘿!月亮出来喽,咱也出门吧."
+      }
+    }
+  },
+  "version": 1
+}
