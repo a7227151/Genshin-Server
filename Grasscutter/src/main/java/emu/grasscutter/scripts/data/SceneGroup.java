@@ -1,9 +1,8 @@
 package emu.grasscutter.scripts.data;
 
-import emu.grasscutter.utils.Position;
-
 import java.util.List;
-import java.util.Map;
+
+import emu.grasscutter.utils.Position;
 
 public class SceneGroup {
 	public transient int block_id; // Not an actual variable in the scripts but we will keep it here for reference
@@ -11,11 +10,8 @@ public class SceneGroup {
 	public int id;
 	public int refresh_id;
 	public Position pos;
-
-	/**
-	 * ConfigId - Monster
-	 */
-	public Map<Integer,SceneMonster> monsters;
+	
+	public List<SceneMonster> monsters;
 	public List<SceneGadget> gadgets;
 	public List<SceneTrigger> triggers;
 	public List<SceneRegion> regions;

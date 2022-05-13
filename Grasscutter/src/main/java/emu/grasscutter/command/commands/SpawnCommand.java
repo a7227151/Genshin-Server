@@ -22,13 +22,14 @@ import java.util.Random;
 
 import static emu.grasscutter.utils.Language.translate;
 
-@Command(label = "spawn", usage = "spawn <entityId> [amount] [level(monster only)]", permission = "server.spawn", permissionTargeted = "server.spawn.others", description = "commands.spawn.description")
+@Command(label = "spawn", usage = "spawn <entityId> [amount] [level(monster only)]",
+        description = "Spawns an entity near you", permission = "server.spawn")
 public final class SpawnCommand implements CommandHandler {
 
     @Override
     public void execute(Player sender, Player targetPlayer, List<String> args) {
         if (targetPlayer == null) {
-            CommandHandler.sendMessage(sender, translate(sender, "commands.execution.need_target"));
+            CommandHandler.sendMessage(sender, translate("commands.execution.need_target"));
             return;
         }
 
@@ -40,23 +41,23 @@ public final class SpawnCommand implements CommandHandler {
                 try {
                     level = Integer.parseInt(args.get(2));
                 } catch (NumberFormatException ignored) {
-                    CommandHandler.sendMessage(sender, translate(sender, "commands.execution.argument_error"));
+                    CommandHandler.sendMessage(sender, translate("commands.execution.argument_error"));
                 }  // Fallthrough
             case 2:
                 try {
                     amount = Integer.parseInt(args.get(1));
                 } catch (NumberFormatException ignored) {
-                    CommandHandler.sendMessage(sender, translate(sender, "commands.generic.invalid.amount"));
+                    CommandHandler.sendMessage(sender, translate("commands.generic.error.amount"));
                 }  // Fallthrough
             case 1:
                 try {
                     id = Integer.parseInt(args.get(0));
                 } catch (NumberFormatException ignored) {
-                    CommandHandler.sendMessage(sender, translate(sender, "commands.generic.invalid.entityId"));
+                    CommandHandler.sendMessage(sender, translate("commands.generic.error.entityId"));
                 }
                 break;
             default:
-                CommandHandler.sendMessage(sender, translate(sender, "commands.spawn.usage"));
+                CommandHandler.sendMessage(sender, translate("commands.spawn.usage"));
                 return;
         }
 
@@ -64,7 +65,7 @@ public final class SpawnCommand implements CommandHandler {
         GadgetData gadgetData = GameData.getGadgetDataMap().get(id);
         ItemData itemData = GameData.getItemDataMap().get(id);
         if (monsterData == null && gadgetData == null && itemData == null) {
-            CommandHandler.sendMessage(sender, translate(sender, "commands.generic.invalid.entityId"));
+            CommandHandler.sendMessage(sender, translate("commands.generic.error.entityId"));
             return;
         }
         Scene scene = targetPlayer.getScene();
@@ -100,7 +101,7 @@ public final class SpawnCommand implements CommandHandler {
 
             scene.addEntity(entity);
         }
-        CommandHandler.sendMessage(sender, translate(sender, "commands.spawn.success", Integer.toString(amount), Integer.toString(id)));
+        CommandHandler.sendMessage(sender, translate("commands.spawn.success", Integer.toString(amount), Integer.toString(id)));
     }
 
     private Position GetRandomPositionInCircle(Position origin, double radius){

@@ -15,7 +15,6 @@ import emu.grasscutter.game.managers.InventoryManager;
 import emu.grasscutter.game.managers.MultiplayerManager;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.game.shop.ShopManager;
-import emu.grasscutter.game.tower.TowerScheduleManager;
 import emu.grasscutter.game.world.World;
 import emu.grasscutter.net.packet.PacketHandler;
 import emu.grasscutter.net.proto.SocialDetailOuterClass.SocialDetail;
@@ -30,9 +29,11 @@ import java.net.InetSocketAddress;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static emu.grasscutter.utils.Language.translate;
-import static emu.grasscutter.Configuration.*;
 
 public final class GameServer extends KcpServer {
 	private final InetSocketAddress address;
@@ -53,12 +54,11 @@ public final class GameServer extends KcpServer {
 	private final DropManager dropManager;
 
 	private final CombineManger combineManger;
-	private final TowerScheduleManager towerScheduleManager;
 
 	public GameServer() {
 		this(new InetSocketAddress(
-				GAME_INFO.bindAddress,
-				GAME_INFO.bindPort
+				Grasscutter.getConfig().getGameServerOptions().Ip, 
+				Grasscutter.getConfig().getGameServerOptions().Port
 		));
 	}
 	
@@ -82,7 +82,7 @@ public final class GameServer extends KcpServer {
 		this.dropManager = new DropManager(this);
 		this.expeditionManager = new ExpeditionManager(this);
 		this.combineManger = new CombineManger(this);
-		this.towerScheduleManager = new TowerScheduleManager(this);
+		
 		// Hook into shutdown event.
 		Runtime.getRuntime().addShutdownHook(new Thread(this::onServerShutdown));
 	}
@@ -137,10 +137,6 @@ public final class GameServer extends KcpServer {
 
 	public CombineManger getCombineManger(){
 		return this.combineManger;
-	}
-
-	public TowerScheduleManager getTowerScheduleManager() {
-		return towerScheduleManager;
 	}
 
 	public TaskMap getTaskMap() {

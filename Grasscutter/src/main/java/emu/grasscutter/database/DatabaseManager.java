@@ -1,5 +1,6 @@
 package emu.grasscutter.database;
 
+import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCommandException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -19,18 +20,17 @@ import emu.grasscutter.game.gacha.GachaRecord;
 import emu.grasscutter.game.inventory.GameItem;
 import emu.grasscutter.game.mail.Mail;
 import emu.grasscutter.game.player.Player;
-import emu.grasscutter.game.quest.GameMainQuest;
-import emu.grasscutter.game.quest.GameQuest;
-
-import static emu.grasscutter.Configuration.*;
 
 public final class DatabaseManager {
+
+	private static MongoClient mongoClient;
+	private static MongoClient dispatchMongoClient;
+
 	private static Datastore datastore;
 	private static Datastore dispatchDatastore;
 	
 	private static final Class<?>[] mappedClasses = new Class<?>[] {
-		DatabaseCounter.class, Account.class, Player.class, Avatar.class, GameItem.class, Friendship.class, 
-		GachaRecord.class, Mail.class, GameMainQuest.class
+		DatabaseCounter.class, Account.class, Player.class, Avatar.class, GameItem.class, Friendship.class, GachaRecord.class, Mail.class
 	};
     
     public static Datastore getDatastore() {
@@ -44,7 +44,7 @@ public final class DatabaseManager {
 	// Yes. I very dislike this method. However, this will be good for now.
 	// TODO: Add dispatch routes for player account management
 	public static Datastore getAccountDatastore() {
-		if(SERVER.runMode == ServerRunMode.GAME_ONLY) {
+		if(Grasscutter.getConfig().RunMode == ServerRunMode.GAME_ONLY) {
 			return dispatchDatastore;
 		} else {
 			return datastore;
@@ -53,13 +53,13 @@ public final class DatabaseManager {
 	
 	public static void initialize() {
 		// Initialize
-		MongoClient mongoClient = MongoClients.create(DATABASE.connectionUri);
+		MongoClient mongoClient = MongoClients.create(Grasscutter.getConfig().DatabaseUrl);
 		
 		// Set mapper options.
 		MapperOptions mapperOptions = MapperOptions.builder()
 				.storeEmpties(true).storeNulls(false).build();
 		// Create data store.
-		datastore = Morphia.createDatastore(mongoClient, DATABASE.collection, mapperOptions);
+		datastore = Morphia.createDatastore(mongoClient, Grasscutter.getConfig().DatabaseCollection, mapperOptions);
 		// Map classes.
 		datastore.getMapper().map(mappedClasses);
 		
@@ -80,9 +80,9 @@ public final class DatabaseManager {
 			}
 		}
 
-		if(SERVER.runMode == ServerRunMode.GAME_ONLY) {
-			MongoClient dispatchMongoClient = MongoClients.create(GAME_OPTIONS.databaseInfo.connectionUri);
-			dispatchDatastore = Morphia.createDatastore(dispatchMongoClient, GAME_OPTIONS.databaseInfo.collection);
+		if(Grasscutter.getConfig().RunMode == ServerRunMode.GAME_ONLY) {
+			dispatchMongoClient = MongoClients.create(Grasscutter.getConfig().getGameServerOptions().DispatchServerDatabaseUrl);
+			dispatchDatastore = Morphia.createDatastore(dispatchMongoClient, Grasscutter.getConfig().getGameServerOptions().DispatchServerDatabaseCollection);
 
 			// Ensure indexes for dispatch server
 			try {

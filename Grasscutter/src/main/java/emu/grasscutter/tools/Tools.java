@@ -1,8 +1,12 @@
 package emu.grasscutter.tools;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -10,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -25,9 +30,6 @@ import emu.grasscutter.data.def.MonsterData;
 import emu.grasscutter.data.def.SceneData;
 import emu.grasscutter.utils.Utils;
 
-import static emu.grasscutter.utils.Language.translate;
-import static emu.grasscutter.Configuration.*;
-
 public final class Tools {
 	public static void createGmHandbook() throws Exception {
 		ToolsWithLanguageOption.createGmHandbook(getLanguageOption());
@@ -37,45 +39,50 @@ public final class Tools {
 		ToolsWithLanguageOption.createGachaMapping(location, getLanguageOption());
 	}
 
-	public static List<String> getAvailableLanguage() {
-		File textMapFolder = new File(RESOURCE("TextMap"));
-		List<String> availableLangList = new ArrayList<>();
-		for (String textMapFileName : Objects.requireNonNull(textMapFolder.list((dir, name) -> name.startsWith("TextMap") && name.endsWith(".json")))) {
-			availableLangList.add(textMapFileName.replace("TextMap", "").replace(".json", "").toLowerCase());
-		} return availableLangList;
+	public static List<String> getAvailableLanguage() throws Exception {
+		File textMapFolder = new File(Grasscutter.getConfig().RESOURCE_FOLDER + "TextMap");
+		List<String> availableLangList = new ArrayList<String>();
+		for (String textMapFileName : textMapFolder.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File dir, String name) {
+				if (name.startsWith("TextMap") && name.endsWith(".json")){
+					return true;
+				}
+				return false;
+			}
+		})) {
+			availableLangList.add(textMapFileName.replace("TextMap","").replace(".json","").toLowerCase());
+		}
+		return availableLangList;
 	}
 
-	public static String getLanguageOption() {
+	public static String getLanguageOption() throws Exception {
 		List<String> availableLangList = getAvailableLanguage();
 	
 		// Use system out for better format
 		if (availableLangList.size() == 1) {
 			return availableLangList.get(0).toUpperCase();
 		}
-		StringBuilder stagedMessage = new StringBuilder();
-		stagedMessage.append("The following languages mappings are available, please select one: [default: EN] \n");
-		
-		StringBuilder groupedLangList = new StringBuilder(">\t"); String input;
+		String stagedMessage = "";
+		stagedMessage += "The following languages mappings are available, please select one: [default: EN]\n";
+		String groupedLangList = ">\t";
 		int groupedLangCount = 0;
-		
+		String input = "";
 		for (String availableLanguage: availableLangList){
 			groupedLangCount++;
-			groupedLangList.append(availableLanguage).append("\t");
-			
+			groupedLangList = groupedLangList + "" + availableLanguage + "\t";
 			if (groupedLangCount == 6) {
-				stagedMessage.append(groupedLangList).append("\n");
+				stagedMessage += groupedLangList + "\n";
 				groupedLangCount = 0;
-				groupedLangList = new StringBuilder(">\t");
+				groupedLangList = ">\t";
 			}
 		}
-		
 		if (groupedLangCount > 0) {
-			stagedMessage.append(groupedLangList).append("\n");
+			stagedMessage += groupedLangList + "\n";
 		}
+		stagedMessage += "\nYour choice:[EN] ";
 		
-		stagedMessage.append("\nYour choice:[EN] ");
-		
-		input = Grasscutter.getConsole().readLine(stagedMessage.toString());
+		input = Grasscutter.getConsole().readLine(stagedMessage);
 		if (availableLangList.contains(input.toLowerCase())) {
 			return input.toUpperCase();
 		}
@@ -91,7 +98,7 @@ final class ToolsWithLanguageOption {
 		ResourceLoader.loadResources();
 		
 		Map<Long, String> map;
-		try (InputStreamReader fileReader = new InputStreamReader(new FileInputStream(Utils.toFilePath(RESOURCE("TextMap/TextMap"+language+".json"))), StandardCharsets.UTF_8)) {
+		try (InputStreamReader fileReader = new InputStreamReader(new FileInputStream(Utils.toFilePath(Grasscutter.getConfig().RESOURCE_FOLDER + "TextMap/TextMap"+language+".json")), StandardCharsets.UTF_8)) {
 			map = Grasscutter.getGsonFactory().fromJson(fileReader, new TypeToken<Map<Long, String>>() {}.getType());
 		}
 		
@@ -109,12 +116,13 @@ final class ToolsWithLanguageOption {
 
 			writer.println("// Commands");
 			for (Command cmd : cmdList) {
-				StringBuilder cmdName = new StringBuilder(cmd.label());
+				String cmdName = cmd.label();
 				while (cmdName.length() <= 15) {
-					cmdName.insert(0, " ");
+					cmdName = " " + cmdName;
 				}
-				writer.println(cmdName + " : " + translate(cmd.description()));
+				writer.println(cmdName + " : " + cmd.description());
 			}
+
 			writer.println();
 
 			list = new ArrayList<>(GameData.getAvatarDataMap().keySet());
@@ -168,13 +176,16 @@ final class ToolsWithLanguageOption {
 		ResourceLoader.loadResources();
 		
 		Map<Long, String> map;
-		try (InputStreamReader fileReader = new InputStreamReader(new FileInputStream(Utils.toFilePath(RESOURCE("TextMap/TextMap" + language + ".json"))), StandardCharsets.UTF_8)) {
+		try (InputStreamReader fileReader = new InputStreamReader(new FileInputStream(Utils.toFilePath(Grasscutter.getConfig().RESOURCE_FOLDER + "TextMap/TextMap"+language+".json")), StandardCharsets.UTF_8)) {
 			map = Grasscutter.getGsonFactory().fromJson(fileReader, new TypeToken<Map<Long, String>>() {}.getType());
 		}
 		
 		List<Integer> list;
 
-		try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(location), StandardCharsets.UTF_8), false)) {
+		String fileName = location;
+
+		try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.UTF_8), false)) {
+			
 			list = new ArrayList<>(GameData.getAvatarDataMap().keySet());
 			Collections.sort(list); 
 			 
@@ -196,11 +207,18 @@ final class ToolsWithLanguageOption {
 				} else {
 					writer.print(",");
 				}
-				String color = switch (data.getQualityType()) {
-					case "QUALITY_PURPLE" -> "purple";
-					case "QUALITY_ORANGE" -> "yellow";
-					default -> "blue";
-				};
+				String color;
+				switch (data.getQualityType()){
+					case "QUALITY_PURPLE":
+						color = "purple";
+						break;
+					case "QUALITY_ORANGE":
+						color = "yellow";
+						break;
+					case "QUALITY_BLUE":
+					default:
+						color = "blue";
+				}
 				// Got the magic number 4233146695 from manually search in the json file
 				writer.println(
 					"\"" + (avatarID % 1000 + 1000) + "\" : [\"" 

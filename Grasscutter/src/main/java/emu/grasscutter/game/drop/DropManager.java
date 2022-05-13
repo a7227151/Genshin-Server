@@ -21,8 +21,6 @@ import java.io.FileReader;
 import java.util.Collection;
 import java.util.List;
 
-import static emu.grasscutter.Configuration.*;
-
 public class DropManager {
     public GameServer getGameServer() {
         return gameServer;
@@ -43,7 +41,7 @@ public class DropManager {
     }
 
     public synchronized void load() {
-        try (FileReader fileReader = new FileReader(DATA("Drop.json"))) {
+        try (FileReader fileReader = new FileReader(Grasscutter.getConfig().DATA_FOLDER + "Drop.json")) {
             getDropData().clear();
             List<DropInfo> banners = Grasscutter.getGsonFactory().fromJson(fileReader, TypeToken.getParameterized(Collection.class, DropInfo.class).getType());
             if(banners.size() > 0) {
@@ -71,7 +69,9 @@ public class DropManager {
             } else {
                 // target is null if items will be added are shared. no one could pick it up because of the combination(give + shared)
                 // so it will be sent to all players' inventories directly.
-                dropScene.getPlayers().forEach(x -> x.getInventory().addItem(new GameItem(itemData, num), ActionReason.SubfieldDrop, true));
+                dropScene.getPlayers().forEach(x -> {
+                    x.getInventory().addItem(new GameItem(itemData, num), ActionReason.SubfieldDrop, true);
+                });
             }
         }
     }

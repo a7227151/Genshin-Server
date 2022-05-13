@@ -3,6 +3,7 @@ package emu.grasscutter.server.game;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.util.HashSet;
 import java.util.Set;
 
 import emu.grasscutter.Grasscutter;
@@ -22,10 +23,9 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 
 import static emu.grasscutter.utils.Language.translate;
-import static emu.grasscutter.Configuration.*;
 
 public class GameSession extends KcpChannel {
-	private final GameServer server;
+	private GameServer server;
 	
 	private Account account;
 	private Player player;
@@ -140,7 +140,7 @@ public class GameSession extends KcpChannel {
     }
     
     public void replayPacket(int opcode, String name) {
-    	String filePath = PACKETS_FOLDER + name;
+    	String filePath = Grasscutter.getConfig().PACKETS_FOLDER + name;
 		File p = new File(filePath);
 		
 		if (!p.exists()) return;
@@ -172,7 +172,7 @@ public class GameSession extends KcpChannel {
     	}
     	
     	// Log
-    	if (SERVER.debugLevel == ServerDebugMode.ALL) {
+    	if (Grasscutter.getConfig().DebugMode == ServerDebugMode.ALL) {
     		logPacket(packet);
     	}
 		
@@ -239,7 +239,7 @@ public class GameSession extends KcpChannel {
 				}
 				
 				// Log packet
-				if (SERVER.debugLevel == ServerDebugMode.ALL) {
+				if (Grasscutter.getConfig().DebugMode == ServerDebugMode.ALL) {
 					if (!loopPacket.contains(opcode)) {
 						Grasscutter.getLogger().info("RECV: " + PacketOpcodesUtil.getOpcodeName(opcode) + " (" + opcode + ")");
 						System.out.println(Utils.bytesToHex(payload));

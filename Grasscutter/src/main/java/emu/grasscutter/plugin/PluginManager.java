@@ -16,8 +16,6 @@ import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import static emu.grasscutter.Configuration.*;
-
 /**
  * Manages the server's plugins and the event system.
  */
@@ -33,7 +31,8 @@ public final class PluginManager {
      * Loads plugins from the config-specified directory.
      */
     private void loadPlugins() {
-        File pluginsDir = new File(Utils.toFilePath(PLUGINS_FOLDER));
+        String directory = Grasscutter.getConfig().PLUGINS_FOLDER;
+        File pluginsDir = new File(Utils.toFilePath(directory));
         if(!pluginsDir.exists() && !pluginsDir.mkdirs()) {
             Grasscutter.getLogger().error("Failed to create plugins directory: " + pluginsDir.getAbsolutePath());
             return;

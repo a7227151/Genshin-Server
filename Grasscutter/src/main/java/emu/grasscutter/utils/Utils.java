@@ -9,16 +9,14 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.Locale;
 
+import emu.grasscutter.Config;
 import emu.grasscutter.Grasscutter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 
 import org.slf4j.Logger;
-
-import javax.annotation.Nullable;
 
 import static emu.grasscutter.utils.Language.translate;
 
@@ -174,12 +172,12 @@ public final class Utils {
 	 * Checks for required files and folders before startup.
 	 */
 	public static void startupCheck() {
-		ConfigContainer config = Grasscutter.getConfig();
+		Config config = Grasscutter.getConfig();
 		Logger logger = Grasscutter.getLogger();
 		boolean exit = false;
 
-		String resourcesFolder = config.folderStructure.resources;
-		String dataFolder = config.folderStructure.data;
+		String resourcesFolder = config.RESOURCE_FOLDER;
+		String dataFolder = config.DATA_FOLDER;
 
 		// Check for resources folder.
 		if(!fileExists(resourcesFolder)) {
@@ -255,9 +253,7 @@ public final class Utils {
 	 * @param stream The input stream.
 	 * @return The string.
 	 */
-	public static String readFromInputStream(@Nullable InputStream stream) {
-		if(stream == null) return "empty";
-		
+	public static String readFromInputStream(InputStream stream) {
 		StringBuilder stringBuilder = new StringBuilder();
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
 			String line; while ((line = reader.readLine()) != null) {
@@ -265,8 +261,6 @@ public final class Utils {
 			} stream.close();
 		} catch (IOException e) {
 			Grasscutter.getLogger().warn("Failed to read from input stream.");
-		} catch (NullPointerException ignored) {
-			return "empty";
 		} return stringBuilder.toString();
 	}
 
@@ -306,12 +300,4 @@ public final class Utils {
 
 		return map;
 	}
-
-	/**
-	 * get language code from Locale
-	 */
-    public static String getLanguageCode(Locale locale) {
-        return String.format("%s-%s", locale.getLanguage(), locale.getCountry());
-    }
-
 }

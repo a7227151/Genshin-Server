@@ -7,8 +7,6 @@ import emu.grasscutter.Grasscutter;
 import emu.grasscutter.net.proto.GetPlayerTokenRspOuterClass.GetPlayerTokenRsp;
 import emu.grasscutter.net.proto.QueryCurrRegionHttpRspOuterClass.QueryCurrRegionHttpRsp;
 
-import static emu.grasscutter.Configuration.*;
-
 public final class Crypto {
 	private static final SecureRandom secureRandom = new SecureRandom();
 	public static final long ENCRYPT_SEED = Long.parseUnsignedLong("11468049314633205968");
@@ -18,9 +16,9 @@ public final class Crypto {
 	public static byte[] ENCRYPT_KEY;
 	
 	public static void loadKeys() {
-		DISPATCH_KEY = FileUtils.read(KEYS_FOLDER + "/dispatchKey.bin");
-		ENCRYPT_KEY = FileUtils.read(KEYS_FOLDER + "/secretKey.bin");
-		ENCRYPT_SEED_BUFFER = FileUtils.read(KEYS_FOLDER + "/secretKeyBuffer.bin");
+		DISPATCH_KEY = FileUtils.read(Grasscutter.getConfig().KEY_FOLDER + "dispatchKey.bin");
+		ENCRYPT_KEY = FileUtils.read(Grasscutter.getConfig().KEY_FOLDER + "secretKey.bin");
+		ENCRYPT_SEED_BUFFER = FileUtils.read(Grasscutter.getConfig().KEY_FOLDER + "secretKeyBuffer.bin");
 	}
 	
 	public static void xor(byte[] packet, byte[] key) {
@@ -36,7 +34,7 @@ public final class Crypto {
 	public static void extractSecretKeyBuffer(byte[] data) {
 		try {
 			GetPlayerTokenRsp p = GetPlayerTokenRsp.parseFrom(data);
-			FileUtils.write(KEYS_FOLDER + "/secretKeyBuffer.bin", p.getSecretKeyBytes().toByteArray());
+			FileUtils.write(Grasscutter.getConfig().KEY_FOLDER + "secretKeyBuffer.bin", p.getSecretKeyBytes().toByteArray());
 			Grasscutter.getLogger().info("Secret Key: " + p.getSecretKey());
 		} catch (Exception e) {
 			Grasscutter.getLogger().error("Crypto error.", e);
@@ -46,7 +44,7 @@ public final class Crypto {
 	public static void extractDispatchSeed(String data) {
 		try {
 			QueryCurrRegionHttpRsp p = QueryCurrRegionHttpRsp.parseFrom(Base64.getDecoder().decode(data));
-			FileUtils.write(KEYS_FOLDER + "/dispatchSeed.bin", p.getRegionInfo().getSecretKey().toByteArray());
+			FileUtils.write(Grasscutter.getConfig().KEY_FOLDER + "dispatchSeed.bin", p.getRegionInfo().getSecretKey().toByteArray());
 		} catch (Exception e) {
 			Grasscutter.getLogger().error("Crypto error.", e);
 		}

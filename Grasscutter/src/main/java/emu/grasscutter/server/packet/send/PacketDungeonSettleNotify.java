@@ -46,7 +46,7 @@ public class PacketDungeonSettleNotify extends BasePacket {
 						.setCount(1000)
 						.build())
 				;
-		if(nextFloorId > 0 && canJump){
+		if(nextFloorId > 0){
 			towerLevelEndNotify.setNextFloorId(nextFloorId);
 		}
 

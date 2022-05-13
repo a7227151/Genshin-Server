@@ -105,13 +105,7 @@ public class Scene {
 	public GameEntity getEntityById(int id) {
 		return this.entities.get(id);
 	}
-
-	public GameEntity getEntityByConfigId(int configId) {
-		return this.entities.values().stream()
-				.filter(x -> x.getConfigId() == configId)
-				.findFirst()
-				.orElse(null);
-	}
+	
 	/**
 	 * @return the autoCloseTime
 	 */
@@ -385,7 +379,27 @@ public class Scene {
 		}
 		
 		// Sanity check
-		target.damage(result.getDamage(), result.getAttackerId());
+		if (target.getFightProperties() == null) {
+			return;
+		}
+		
+		// Lose hp
+		target.addFightProperty(FightProperty.FIGHT_PROP_CUR_HP, -result.getDamage());
+		
+		// Check if dead
+		boolean isDead = false;
+		if (target.getFightProperty(FightProperty.FIGHT_PROP_CUR_HP) <= 0f) {
+			target.setFightProperty(FightProperty.FIGHT_PROP_CUR_HP, 0f);
+			isDead = true;
+		}
+		
+		// Packets
+		this.broadcastPacket(new PacketEntityFightPropUpdateNotify(target, FightProperty.FIGHT_PROP_CUR_HP));
+		
+		// Check if dead
+		if (isDead) {
+			this.killEntity(target, result.getAttackerId());
+		}
 	}
 	
 	public void killEntity(GameEntity target, int attackerId) {

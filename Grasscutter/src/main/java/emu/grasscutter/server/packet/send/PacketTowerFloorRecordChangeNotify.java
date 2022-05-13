@@ -8,13 +8,13 @@ import emu.grasscutter.net.proto.TowerLevelRecordOuterClass.TowerLevelRecord;
 
 public class PacketTowerFloorRecordChangeNotify extends BasePacket {
 
-	public PacketTowerFloorRecordChangeNotify(int floorId, int stars, boolean canEnterScheduleFloor) {
+	public PacketTowerFloorRecordChangeNotify(int floorId) {
 		super(PacketOpcodes.TowerFloorRecordChangeNotify);
 
 		TowerFloorRecordChangeNotify proto = TowerFloorRecordChangeNotify.newBuilder()
 				.addTowerFloorRecordList(TowerFloorRecord.newBuilder()
 						.setFloorId(floorId)
-						.setFloorStarRewardProgress(stars)
+						.setFloorStarRewardProgress(3)
 						.addPassedLevelRecordList(TowerLevelRecord.newBuilder()
 								.setLevelId(1)
 								.addSatisfiedCondList(1)
@@ -22,7 +22,7 @@ public class PacketTowerFloorRecordChangeNotify extends BasePacket {
 								.addSatisfiedCondList(3)
 								.build())
 						.build())
-				.setIsFinishedEntranceFloor(canEnterScheduleFloor)
+				.setIsFinishedEntranceFloor(true)
 				.build();
 		
 		this.setData(proto);

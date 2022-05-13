@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URLClassLoader;
 
-import static emu.grasscutter.Configuration.*;
-
 /**
  * The base class for all plugins to extend.
  */
@@ -34,7 +32,7 @@ public abstract class Plugin {
         
         this.identifier = identifier;
         this.classLoader = classLoader;
-        this.dataFolder = new File(PLUGINS_FOLDER, identifier.name);
+        this.dataFolder = new File(Grasscutter.getConfig().PLUGINS_FOLDER, identifier.name);
         
         if(!this.dataFolder.exists() && !this.dataFolder.mkdirs()) {
             Grasscutter.getLogger().warn("Failed to create plugin data folder for " + this.identifier.name);

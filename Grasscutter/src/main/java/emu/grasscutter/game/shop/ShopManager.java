@@ -16,8 +16,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static emu.grasscutter.Configuration.*;
-
 public class ShopManager {
 	private final GameServer server;
 
@@ -58,7 +56,7 @@ public class ShopManager {
 	}
 
 	private void loadShop() {
-		try (FileReader fileReader = new FileReader(DATA("Shop.json"))) {
+		try (FileReader fileReader = new FileReader(Grasscutter.getConfig().DATA_FOLDER + "Shop.json")) {
 			getShopData().clear();
 			List<ShopTable> banners = Grasscutter.getGsonFactory().fromJson(fileReader, TypeToken.getParameterized(Collection.class, ShopTable.class).getType());
 			if(banners.size() > 0) {
@@ -86,7 +84,7 @@ public class ShopManager {
 				Grasscutter.getLogger().error("Unable to load shop data. Shop data size is 0.");
 			}
 
-			if (GAME_OPTIONS.enableShopItems) {
+			if (Grasscutter.getConfig().getGameServerOptions().EnableOfficialShop) {
 				GameData.getShopGoodsDataEntries().forEach((k, v) -> {
 					if (!getShopData().containsKey(k.intValue()))
 						getShopData().put(k.intValue(), new ArrayList<>());
@@ -102,7 +100,7 @@ public class ShopManager {
 	}
 
 	private void loadShopChest() {
-		try (FileReader fileReader = new FileReader(DATA("ShopChest.json"))) {
+		try (FileReader fileReader = new FileReader(Grasscutter.getConfig().DATA_FOLDER + "ShopChest.json")) {
 			getShopChestData().clear();
 			List<ShopChestTable> shopChestTableList = Grasscutter.getGsonFactory().fromJson(fileReader, TypeToken.getParameterized(Collection.class, ShopChestTable.class).getType());
 			if (shopChestTableList.size() > 0) {
@@ -117,7 +115,7 @@ public class ShopManager {
 	}
 
 	private void loadShopChestBatchUse() {
-		try (FileReader fileReader = new FileReader(DATA("ShopChestBatchUse.json"))) {
+		try (FileReader fileReader = new FileReader(Grasscutter.getConfig().DATA_FOLDER + "ShopChestBatchUse.json")) {
 			getShopChestBatchUseData().clear();
 			List<ShopChestBatchUseTable> shopChestBatchUseTableList = Grasscutter.getGsonFactory().fromJson(fileReader, TypeToken.getParameterized(Collection.class, ShopChestBatchUseTable.class).getType());
 			if (shopChestBatchUseTableList.size() > 0) {

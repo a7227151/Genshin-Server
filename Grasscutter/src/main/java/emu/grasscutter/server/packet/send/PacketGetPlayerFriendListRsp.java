@@ -1,6 +1,7 @@
 package emu.grasscutter.server.packet.send;
 
 import emu.grasscutter.GameConstants;
+import emu.grasscutter.Grasscutter;
 import emu.grasscutter.game.friends.Friendship;
 import emu.grasscutter.game.player.Player;
 import emu.grasscutter.net.packet.BasePacket;
@@ -11,23 +12,20 @@ import emu.grasscutter.net.proto.GetPlayerFriendListRspOuterClass.GetPlayerFrien
 import emu.grasscutter.net.proto.ProfilePictureOuterClass.ProfilePicture;
 import emu.grasscutter.net.proto.PlatformTypeOuterClass;
 
-import static emu.grasscutter.Configuration.*;
-
 public class PacketGetPlayerFriendListRsp extends BasePacket {
 	
 	public PacketGetPlayerFriendListRsp(Player player) {
 		super(PacketOpcodes.GetPlayerFriendListRsp);
 		
-		var serverAccount = GAME_INFO.serverAccount;
 		FriendBrief serverFriend = FriendBrief.newBuilder()
 				.setUid(GameConstants.SERVER_CONSOLE_UID)
-				.setNickname(serverAccount.nickName)
-				.setLevel(serverAccount.adventureRank)
-				.setProfilePicture(ProfilePicture.newBuilder().setAvatarId(serverAccount.avatarId))
-				.setWorldLevel(serverAccount.worldLevel)
-				.setSignature(serverAccount.signature)
+				.setNickname(Grasscutter.getConfig().getGameServerOptions().ServerNickname)
+				.setLevel(Grasscutter.getConfig().getGameServerOptions().ServerLevel)
+				.setProfilePicture(ProfilePicture.newBuilder().setAvatarId(Grasscutter.getConfig().getGameServerOptions().ServerAvatarId))
+				.setWorldLevel(Grasscutter.getConfig().getGameServerOptions().ServerWorldLevel)
+				.setSignature(Grasscutter.getConfig().getGameServerOptions().ServerSignature)
 				.setLastActiveTime((int) (System.currentTimeMillis() / 1000f))
-				.setNameCardId(serverAccount.nameCardId)
+				.setNameCardId(Grasscutter.getConfig().getGameServerOptions().ServerNameCardId)
 				.setOnlineState(FriendOnlineState.FRIEND_ONLINE)
 				.setParam(1)
 				.setIsGameSource(true)
@@ -39,12 +37,10 @@ public class PacketGetPlayerFriendListRsp extends BasePacket {
 		for (Friendship friendship : player.getFriendsList().getFriends().values()) {
 			proto.addFriendList(friendship.toProto());
 		}
-		
 		for (Friendship friendship : player.getFriendsList().getPendingFriends().values()) {
 			if (friendship.getAskerId() == player.getUid()) {
 				continue;
 			}
-			
 			proto.addAskFriendList(friendship.toProto());
 		}
 		
