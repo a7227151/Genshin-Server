@@ -8,8 +8,14 @@
     "plugins": "./plugins/"
   },
   "databaseInfo": {
-    "connectionUri": "mongodb://localhost:27017",
-    "collection": "grasscutter"
+    "server": {
+      "connectionUri": "mongodb://localhost:27017",
+      "collection": "grasscutter"
+    },
+    "game": {
+      "connectionUri": "mongodb://localhost:27017",
+      "collection": "grasscutter"
+    }
   },
   "language": {
     "language": "zh_CN",
@@ -22,11 +28,11 @@
   "server": {
     "debugLevel": "NONE",
     "runMode": "HYBRID",
-    "dispatch": {
+    "http": {
       "bindAddress": "0.0.0.0",
       "accessAddress": "127.0.0.1",
       "bindPort": 443,
-      "accessPort": 443,
+      "accessPort": 0,
       "encryption": {
         "useEncryption": true,
         "useInRouting": true,
@@ -41,8 +47,10 @@
           ]
         }
       },
-      "regions": [],
-      "defaultName": "Grasscutter"
+      "files": {
+        "indexFile": "./index.html",
+        "errorFile": "./404.html"
+      }
     },
     "game": {
       "bindAddress": "0.0.0.0",
@@ -69,10 +77,6 @@
           "adventureExp": 1.0,
           "mora": 1.0,
           "leyLines": 1.0
-        },
-        "databaseInfo": {
-          "connectionUri": "mongodb://localhost:27017",
-          "collection": "grasscutter"
         }
       },
       "joinOptions": {
@@ -108,7 +112,11 @@
         "nickName": "胡桃",
         "signature": "嘿嘿!月亮出来喽,咱也出门吧."
       }
+    },
+    "dispatch": {
+      "regions": [],
+      "defaultName": "Grasscutter"
     }
   },
-  "version": 1
+  "version": 3
 }
