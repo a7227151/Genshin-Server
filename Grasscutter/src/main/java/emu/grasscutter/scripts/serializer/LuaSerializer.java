@@ -70,16 +70,17 @@ public class LuaSerializer implements Serializer {
 		}
 		
 		try {
+			//noinspection ConfusingArgumentToVarargsMethod
 			object = type.getDeclaredConstructor().newInstance(null);
 			
 			LuaValue[] keys = table.keys();
 			for (LuaValue k : keys) {
 				try {
-					Field field = object.getClass().getDeclaredField(k.checkjstring());
+					Field field = getField(object.getClass(), k.checkjstring());
 					if (field == null) {
 						continue;
 					}
-					
+          
 					field.setAccessible(true);
 					LuaValue keyValue = table.get(k);
 
@@ -104,5 +105,18 @@ public class LuaSerializer implements Serializer {
 		}
 		
 		return object;
+	}
+
+	public <T> Field getField(Class<T> clazz, String name){
+		try{
+			return clazz.getField(name);
+		} catch (NoSuchFieldException ex) {
+			try {
+				return clazz.getDeclaredField(name);
+			} catch (NoSuchFieldException e) {
+				// ignore
+				return null;
+			}
+		}
 	}
 }
