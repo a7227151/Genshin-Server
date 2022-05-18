@@ -2,9 +2,7 @@ syntax = "proto3";
 
 option java_package = "emu.grasscutter.net.proto";
 
-enum FetterState {
-	NONE = 0;
-	NOT_OPEN = 1;
-	OPEN = 2;
-	FINISH = 3;
+
+message WidgetCameraInfo {
+	uint32 target_entity_id = 1;
 }
