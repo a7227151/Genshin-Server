@@ -41,7 +41,7 @@
       },
       "policies": {
         "cors": {
-          "enabled": false,
+          "enabled": true,
           "allowedOrigins": [
             "*"
           ]
@@ -56,7 +56,9 @@
       "bindAddress": "0.0.0.0",
       "accessAddress": "127.0.0.1",
       "bindPort": 22102,
-      "accessPort": 22102,
+      "accessPort": 0,
+      "enableScriptInBigWorld": false,
+      "enableConsole": true,
       "gameOptions": {
         "inventoryLimits": {
           "weapons": 2000,

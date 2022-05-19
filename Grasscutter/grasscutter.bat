@@ -1,6 +1,6 @@
 @echo off
-color F0
-title Grasscutter
+color e4
+title ¿ØÖÆÌ¨
 
 @rem Set local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" setlocal
@@ -19,10 +19,10 @@ set DEFAULT_JVM_OPTS=
 @rem Find java.exe
 if defined JAVA_HOME goto findJavaFromJavaHome
 
-SET PATH="..\Dataserver\Java\bin"
+SET PATH="%~dp0\Java\bin"
 
 set JAVA_EXE=java.exe
-set JAVA_HOME=..\Dataserver\Java
+set JAVA_HOME=%~dp0\Java
 %JAVA_EXE% -version >NUL 2>&1
 if "%ERRORLEVEL%" == "0" goto execute
 
@@ -35,8 +35,8 @@ echo location of your Java installation.
 goto fail
 
 :findJavaFromJavaHome
-set JAVA_HOME="..\Dataserver\Java"
-set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+set JAVA_HOME=%~dp0\java
+set JAVA_EXE=%~dp0\java\bin\java.exe
 
 if exist "%JAVA_EXE%" goto execute
 
