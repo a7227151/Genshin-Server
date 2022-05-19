@@ -9223,7 +9223,7 @@
         "SubTagNameTextMapHash": 760875338,
         "SubTabId": 2,
         "ShopType": 1001,
-        "RotateId": 10201,
+        "ItemId": 1066,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9250,7 +9250,7 @@
         "SubTagNameTextMapHash": 2627448786,
         "SubTabId": 2,
         "ShopType": 1001,
-        "RotateId": 10202,
+        "ItemId": 1002,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9277,18 +9277,18 @@
         "SubTagNameTextMapHash": 928178450,
         "SubTabId": 2,
         "ShopType": 1001,
-        "RotateId": 10203,
+        "ItemId": 1051,
         "ItemCount": 1,
         "CostItems": [
             {
                 "Id": 221,
-                "Count": 24
+                "Count": 34
             },
             {},
             {},
             {}
         ],
-        "BuyLimit": 3,
+        "BuyLimit": 1,
         "RefreshType": "SHOP_REFRESH_MONTHLY",
         "RefreshParam": 1,
         "BeginTime": "2020-10-01 04:00:01",
@@ -9304,18 +9304,18 @@
         "SubTagNameTextMapHash": 2786624314,
         "SubTabId": 2,
         "ShopType": 1001,
-        "RotateId": 10204,
+        "ItemId": 1062,
         "ItemCount": 1,
         "CostItems": [
             {
                 "Id": 221,
-                "Count": 24
+                "Count": 34
             },
             {},
             {},
             {}
         ],
-        "BuyLimit": 3,
+        "BuyLimit": 1,
         "RefreshType": "SHOP_REFRESH_MONTHLY",
         "RefreshParam": 1,
         "BeginTime": "2020-10-01 04:00:01",
@@ -9331,7 +9331,7 @@
         "SubTagNameTextMapHash": 195318722,
         "SubTabId": 2,
         "ShopType": 1001,
-        "RotateId": 10205,
+        "ItemId": 11501,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9342,7 +9342,7 @@
             {},
             {}
         ],
-        "BuyLimit": 3,
+        "BuyLimit": 999,
         "RefreshType": "SHOP_REFRESH_MONTHLY",
         "RefreshParam": 1,
         "BeginTime": "2020-10-01 04:00:01",
@@ -9358,7 +9358,7 @@
         "SubTagNameTextMapHash": 3707921346,
         "SubTabId": 2,
         "ShopType": 1001,
-        "RotateId": 10206,
+        "ItemId": 11502,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9369,7 +9369,7 @@
             {},
             {}
         ],
-        "BuyLimit": 3,
+        "BuyLimit": 999,
         "RefreshType": "SHOP_REFRESH_MONTHLY",
         "RefreshParam": 1,
         "BeginTime": "2020-10-01 04:00:01",
@@ -9385,7 +9385,7 @@
         "SubTagNameTextMapHash": 3573935306,
         "SubTabId": 2,
         "ShopType": 1001,
-        "RotateId": 10207,
+        "ItemId": 11503,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9396,7 +9396,7 @@
             {},
             {}
         ],
-        "BuyLimit": 3,
+        "BuyLimit": 999,
         "RefreshType": "SHOP_REFRESH_MONTHLY",
         "RefreshParam": 1,
         "BeginTime": "2020-10-01 04:00:01",
@@ -9790,7 +9790,7 @@
         "SubTagNameTextMapHash": 3848910626,
         "SubTabId": 2,
         "ShopType": 1001,
-        "ItemId": 1020,
+        "ItemId": 1042,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9817,7 +9817,7 @@
         "SubTagNameTextMapHash": 4079800562,
         "SubTabId": 2,
         "ShopType": 1001,
-        "ItemId": 1021,
+        "ItemId": 1049,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9844,7 +9844,7 @@
         "SubTagNameTextMapHash": 4255976578,
         "SubTabId": 2,
         "ShopType": 1001,
-        "ItemId": 11404,
+        "ItemId": 11504,
         "ItemCount": 1,
         "CostItems": [
             {
@@ -9855,7 +9855,7 @@
             {},
             {}
         ],
-        "BuyLimit": 3,
+        "BuyLimit": 999,
         "RefreshType": "SHOP_REFRESH_MONTHLY",
         "RefreshParam": 1,
         "BeginTime": "2019-12-01 00:00:00",
