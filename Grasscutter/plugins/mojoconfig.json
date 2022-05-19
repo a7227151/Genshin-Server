@@ -1,0 +1,11 @@
+{
+  "UseCDN": true,
+  "CDNLink": "https://gc-mojoconsole.github.io/",
+  "interfacePath": "/mojoplus/console.html",
+  "responseMessage": "[Mojo控制台] 链接以发送，请检查您的邮箱",
+  "mail": {
+    "title": "Mojo 控制台链接",
+    "author": "Mojo控制中心",
+    "content": "这是您的Mojo控制台链接: {{ LINK }}\n请注意，链接将在一段时间内\u003cb\u003e到期\u003c/b\u003e，您可以在检索一个新的链接"
+  }
+}
