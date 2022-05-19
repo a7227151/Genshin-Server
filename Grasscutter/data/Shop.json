@@ -6,35 +6,39 @@
         "goodsId": 1004202,
         "goodsItem": {
           "Id": 202,
-          "Count": 1000000
+          "Count": 9999999
         },
-        "scoin": 1,
-        "buyLimit": 500,
+        "scoin": 999,
+        "buyLimit": 999,
         "beginTime": 1575129600,
         "endTime": 2051193600,
         "minLevel": 1,
         "maxLevel": 99,
         "costItemList": [
           {
-            "Id": 223,
-            "Count": 100
+            "Id": 203,
+            "Count": 999
           }
         ]
       },
       {
         "goodsId": 10048006,
         "goodsItem": {
-          "Id": 108006,
-          "Count": 20
+          "Id": 102,
+          "Count": 99999
         },
-        "scoin": 100,
-        "hcoin": 100,
-        "mcoin": 100,
-        "buyLimit": 50000,
+        "scoin": 999,
+        "buyLimit": 999,
         "beginTime": 1575129600,
         "endTime": 2051193600,
         "minLevel": 1,
-        "maxLevel": 99
+        "maxLevel": 99,
+        "costItemList": [
+          {
+            "Id": 203,
+            "Count": 999
+          }
+        ]
       },
       {
         "goodsId": 10048033,
@@ -43,7 +47,7 @@
           "Count": 20
         },
         "scoin": 1,
-        "buyLimit": 50000,
+        "buyLimit": 999,
         "beginTime": 1575129600,
         "endTime": 2051193600,
         "minLevel": 1,
