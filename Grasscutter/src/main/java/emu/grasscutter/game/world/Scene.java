@@ -3,10 +3,7 @@ package emu.grasscutter.game.world;
 import emu.grasscutter.Grasscutter;
 import emu.grasscutter.data.GameData;
 import emu.grasscutter.data.GameDepot;
-import emu.grasscutter.data.def.DungeonData;
-import emu.grasscutter.data.def.MonsterData;
-import emu.grasscutter.data.def.SceneData;
-import emu.grasscutter.data.def.WorldLevelData;
+import emu.grasscutter.data.def.*;
 import emu.grasscutter.game.dungeons.DungeonChallenge;
 import emu.grasscutter.game.dungeons.DungeonSettleListener;
 import emu.grasscutter.game.entity.*;
@@ -23,12 +20,10 @@ import emu.grasscutter.net.proto.VisionTypeOuterClass.VisionType;
 import emu.grasscutter.scripts.SceneIndexManager;
 import emu.grasscutter.scripts.SceneScriptManager;
 import emu.grasscutter.scripts.data.SceneBlock;
+import emu.grasscutter.scripts.data.SceneGadget;
 import emu.grasscutter.scripts.data.SceneGroup;
-import emu.grasscutter.server.packet.send.PacketAvatarSkillInfoNotify;
-import emu.grasscutter.server.packet.send.PacketDungeonChallengeFinishNotify;
-import emu.grasscutter.server.packet.send.PacketLifeStateChangeNotify;
-import emu.grasscutter.server.packet.send.PacketSceneEntityAppearNotify;
-import emu.grasscutter.server.packet.send.PacketSceneEntityDisappearNotify;
+import emu.grasscutter.server.packet.send.*;
+import emu.grasscutter.utils.Position;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
@@ -36,6 +31,8 @@ import org.danilopianini.util.SpatialIndex;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static emu.grasscutter.utils.Language.translate;
 
 public class Scene {
 	private final World world;
@@ -534,13 +531,14 @@ public class Scene {
 	public List<SceneGroup> playerMeetGroups(Player player, SceneBlock block){
 		int RANGE = 100;
 
-		var sceneGroups = SceneIndexManager.queryNeighbors(block.sceneGroupIndex, player.getPos(), RANGE);
+		List<SceneGroup> sceneGroups = SceneIndexManager.queryNeighbors(block.sceneGroupIndex, player.getPos(), RANGE);
 
-		var groups = new ArrayList<>(sceneGroups.stream()
+		List<SceneGroup> groups = sceneGroups.stream()
 				.filter(group -> !scriptManager.getLoadedGroupSetPerBlock().get(block.id).contains(group))
-				.peek(group -> scriptManager.getLoadedGroupSetPerBlock().get(block.id).add(group)).toList());
+				.peek(group -> scriptManager.getLoadedGroupSetPerBlock().get(block.id).add(group))
+				.toList();
 
-		if(groups.size() == 0){
+		if (groups.size() == 0) {
 			return List.of();
 		}
 
@@ -577,7 +575,15 @@ public class Scene {
 			if (group.init_config == null) {
 				continue;
 			}
+			
+			// Load garbages
+			List<SceneGadget> garbageGadgets = group.getGarbageGadgets();
+			
+			if (garbageGadgets != null) {
+				garbageGadgets.forEach(g -> scriptManager.createGadget(group.id, group.block_id, g));
+			}
 
+			// Load suites
 			int suite = group.init_config.suite;
 
 			if (suite == 0) {
@@ -586,8 +592,10 @@ public class Scene {
 
 			do {
 				var suiteData = group.getSuiteByIndex(suite);
+				suiteData.sceneTriggers.forEach(getScriptManager()::registerTrigger);
+
 				entities.addAll(suiteData.sceneGadgets.stream()
-						.map(g -> scriptManager.createGadgets(group.id, group.block_id, g)).toList());
+						.map(g -> scriptManager.createGadget(group.id, group.block_id, g)).toList());
 				entities.addAll(suiteData.sceneMonsters.stream()
 						.map(mob -> scriptManager.createMonster(group.id, group.block_id, mob)).toList());
 				suite++;
@@ -609,7 +617,7 @@ public class Scene {
 		
 		for (SceneGroup group : block.groups) {
 			if(group.triggers != null){
-				group.triggers.forEach(getScriptManager()::deregisterTrigger);
+				group.triggers.values().forEach(getScriptManager()::deregisterTrigger);
 			}
 			if(group.regions != null){
 				group.regions.forEach(getScriptManager()::deregisterRegion);
@@ -680,5 +688,23 @@ public class Scene {
     		// Send
     		player.getSession().send(packet);
     	}
+	}
+
+	public void addItemEntity(int itemId, int amount, GameEntity bornForm){
+		ItemData itemData = GameData.getItemDataMap().get(itemId);
+		if (itemData == null) {
+			return;
+		}
+		if (itemData.isEquip()) {
+			float range = (3f + (.1f * amount));
+			for (int i = 0; i < amount; i++) {
+				Position pos = bornForm.getPosition().clone().addX((float) (Math.random() * range) - (range / 2)).addZ((float) (Math.random() * range) - (range / 2)).addZ(.9f);
+				EntityItem entity = new EntityItem(this, null, itemData, pos, 1);
+				addEntity(entity);
+			}
+		} else {
+			EntityItem entity = new EntityItem(this, null, itemData, bornForm.getPosition().clone().addZ(.9f), amount);
+			addEntity(entity);
+		}
 	}
 }

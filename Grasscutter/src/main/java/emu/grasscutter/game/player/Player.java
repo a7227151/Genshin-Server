@@ -47,6 +47,7 @@ import emu.grasscutter.net.proto.OnlinePlayerInfoOuterClass.OnlinePlayerInfo;
 import emu.grasscutter.net.proto.PlayerLocationInfoOuterClass.PlayerLocationInfo;
 import emu.grasscutter.net.proto.ProfilePictureOuterClass.ProfilePicture;
 import emu.grasscutter.net.proto.SocialDetailOuterClass.SocialDetail;
+import emu.grasscutter.scripts.constants.ScriptGadgetState;
 import emu.grasscutter.server.event.player.PlayerJoinEvent;
 import emu.grasscutter.server.event.player.PlayerQuitEvent;
 import emu.grasscutter.server.game.GameServer;
@@ -917,22 +918,20 @@ public class Player {
 				else
 					this.getScene().broadcastPacket(new PacketGadgetInteractRsp(drop, InteractType.INTERACT_PICK_ITEM));
 			}
-		} else if (entity instanceof EntityGadget) {
-			EntityGadget gadget = (EntityGadget) entity;
+		} else if (entity instanceof EntityGadget gadget) {
+			if (gadget.getContent() == null) {
+				return;
+			}
 			
-			if (gadget.getGadgetData().getType() == EntityType.RewardStatue) {
-				if (scene.getChallenge() != null) {
-					scene.getChallenge().getStatueDrops(this);
-				}
-				
-				this.sendPacket(new PacketGadgetInteractRsp(gadget, InteractType.INTERACT_OPEN_STATUE));
+			boolean shouldDelete = gadget.getContent().onInteract(this);
+			
+			if (shouldDelete) {
+				entity.getScene().removeEntity(entity);
 			}
 		} else {
 			// Delete directly
 			entity.getScene().removeEntity(entity);
 		}
-
-		return;
 	}
 
 	public void onPause() {

@@ -84,7 +84,6 @@ public class ConfigContainer {
         public String resources = "./resources/";
         public String data = "./data/";
         public String packets = "./packets/";
-        public String keys = "./keys/";
         public String scripts = "./resources/scripts/";
         public String plugins = "./plugins/";
 
@@ -136,8 +135,9 @@ public class ConfigContainer {
         public int bindPort = 22102;
         /* This is the port used in the default region. */
         public int accessPort = 0;
+        
         public boolean enableScriptInBigWorld = false;
-
+        public boolean enableConsole = true;
         public GameOptions gameOptions = new GameOptions();
         public JoinOptions joinOptions = new JoinOptions();
         public ConsoleAccount serverAccount = new ConsoleAccount();
